@@ -74,6 +74,7 @@ plot(time_series_steps$interval,
 ```{r echo=TRUE}
 time_series_steps[time_series_steps$avg_steps==max(time_series_steps$avg_steps),]$interval
 ```
+At **interval** `r time_series_steps[time_series_steps$avg_steps==max(time_series_steps$avg_steps),]$interval`, max **steps** was `r max(time_series_steps$avg_steps)`
 
 
 ## Imputing missing values

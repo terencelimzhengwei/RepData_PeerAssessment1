@@ -98,6 +98,7 @@ time_series_steps[time_series_steps$avg_steps==max(time_series_steps$avg_steps),
 ```
 ## [1] 835
 ```
+At **interval** 835, max **steps** was 206.1698113
 
 
 ## Imputing missing values
