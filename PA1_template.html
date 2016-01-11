@@ -135,7 +135,8 @@ activity$date&lt;- as.POSIXct(activity$date)</code></pre>
 <ul>
 <li>Number of N.A data</li>
 </ul>
-<pre class="r"><code>number_of_na&lt;-sum(is.na(activity$steps))</code></pre>
+<pre class="r"><code>sum(is.na(activity$steps))</code></pre>
+<pre><code>## [1] 2304</code></pre>
 <ul>
 <li>Fill in the N.A values To fill the N.A values, I replaced the N.A values with the average steps per day in each time interval</li>
 </ul>

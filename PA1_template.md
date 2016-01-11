@@ -104,7 +104,11 @@ time_series_steps[time_series_steps$avg_steps==max(time_series_steps$avg_steps),
 * Number of N.A data
 
 ```r
-number_of_na<-sum(is.na(activity$steps))
+sum(is.na(activity$steps))
+```
+
+```
+## [1] 2304
 ```
 * Fill in the N.A values
 To fill the N.A values, I replaced the N.A values with the average steps per day in each time interval
