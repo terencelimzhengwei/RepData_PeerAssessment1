@@ -2,32 +2,33 @@
 
 
 ## Loading and preprocessing the data
-1. Load the relevant libraries
+* Load the relevant libraries
 
 ```r
 library(dplyr)
 library(ggplot2)
 ```
-2. Load the data
+* Load the data
 
 ```r
 activity<- tbl_df(read.csv("./activity.csv",header=TRUE, na.strings = "NA"))
 ```
-3. Process/transform the data (if necessary) into a format suitable for your analysis
-* Convert date column to date class
+* Process/transform the data (if necessary) into a format suitable for your analysis
+
+_Convert date column to date class_
 
 ```r
 activity$date<-as.character(activity$date)
 activity$date<-as.Date(activity$date,"%Y-%m-%d")
 activity$date<- as.POSIXct(activity$date)
 ```
-* Subset non-NA data
+_Subset non-NA data_
 
 ```r
 non_na_data <- activity %>%
   filter(!is.na(steps))
 ```
-* Summarize total steps by date
+_Summarize total steps by date_
 
 ```r
 steps_day <- non_na_data %>%
@@ -38,7 +39,7 @@ steps_day <- non_na_data %>%
 
 ## What is mean total number of steps taken per day?
 
-4. Plot histogram of the number of steps taken per day
+* Plot histogram of the number of steps taken per day
 
 ```r
 hist(steps_day$total_steps, xlab="total steps per day", main="Total steps per day",col="blue")
@@ -46,7 +47,8 @@ hist(steps_day$total_steps, xlab="total steps per day", main="Total steps per da
 
 ![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)\
 
-5. Calculate mean and media of total steps taken per day
+
+* Calculate mean and media of total steps taken per day
 
 ```r
 mean(steps_day$total_steps)
@@ -65,14 +67,14 @@ median(steps_day$total_steps)
 ```
 
 ## What is the average daily activity pattern?
-6. Summarize mean number of steps by interval 
+* Summarize mean number of steps by interval 
 
 ```r
 time_series_steps <- non_na_data %>%
   group_by(interval) %>%
   summarise(avg_steps=mean(steps))
 ```
-7. Plot time series data
+* Plot time series data
 
 ```r
 plot(time_series_steps$interval,
@@ -85,7 +87,9 @@ plot(time_series_steps$interval,
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-9-1.png)\
-8. Interval with the greatest number of steps
+
+
+* Interval with the greatest number of steps
 
 ```r
 time_series_steps[time_series_steps$avg_steps==max(time_series_steps$avg_steps),]$interval
@@ -97,12 +101,12 @@ time_series_steps[time_series_steps$avg_steps==max(time_series_steps$avg_steps),
 
 
 ## Imputing missing values
-9. Number of N.A data
+* Number of N.A data
 
 ```r
 number_of_na<-sum(is.na(activity$steps))
 ```
-10. Fill in the N.A values
+* Fill in the N.A values
 To fill the N.A values, I replaced the N.A values with the average steps per day in each time interval
 
 ```r
@@ -112,14 +116,14 @@ names(list_of_na_intervals)[1]<-"interval"
 list_of_na_intervals <- left_join(list_of_na_intervals,time_series_steps,by="interval")
 activity$steps[is.na(activity$steps)]<- list_of_na_intervals$avg_steps
 ```
-11. Summarize the sum of steps by date
+* Summarize the sum of steps by date
 
 ```r
 steps_day_with_na <- activity %>%
   group_by(date) %>%
   summarise(total_steps=sum(steps))
 ```
-12. Plot histogram to visualize total steps per day after replacing the NAs
+* Plot histogram to visualize total steps per day after replacing the NAs
 
 ```r
 hist(steps_day_with_na$total_steps,
@@ -129,7 +133,9 @@ hist(steps_day_with_na$total_steps,
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-14-1.png)\
-13. Mean and median of total steps after replacing NAs
+
+
+* Mean and median of total steps after replacing NAs
 
 ```r
 mean(steps_day_with_na$total_steps)
@@ -155,20 +161,20 @@ median(steps_day_with_na$total_steps)
         The impact of imputing missing data on the estimates is small. The mean value is the same while the median value shows a very small difference of 1.1886792.
 
 ## Are there differences in activity patterns between weekdays and weekends?
-14. Add new variable 'day' that has two factors weekday or weekend
+* Add new variable 'day' that has two factors weekday or weekend
 
 ```r
 activity$day=ifelse(weekdays(activity$date)%in%c("Saturday","Sunday"),"weekend","weekday")
 activity$day=factor(activity$day,levels=c("weekday","weekend"))
 ```
-15. Summarize mean steps per day by interval/type of day
+* Summarize mean steps per day by interval/type of day
 
 ```r
 time_series_week <- activity %>%
   group_by(interval,day) %>%
   summarise(avg_steps=mean(steps))
 ```
-16. Create a panel plot containing a time series plot of 5-min interval and the avg number of steps taken averaged across all weekday days or weekend days 
+* Create a panel plot containing a time series plot of 5-min interval and the avg number of steps taken averaged across all weekday days or weekend days 
 
 ```r
 ggplot(time_series_week,
